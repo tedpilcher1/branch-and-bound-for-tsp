@@ -8,10 +8,10 @@ use crate::tsp_types::Node;
 pub fn read_file(file_path: String) -> Vec<Node> {
     let file = File::open(file_path).expect("Unable to read tsp file");
     let mut file = BufReader::new(file);
-    let mut buf = String::new();
     let mut tsp_graph: Vec<Node> = Vec::new();
 
     // skip first 6 lines, there's probably a smarter way to do this but fuck it
+    let mut buf = String::new();
     for _ in 0..6 {
         let _ = file.read_line(&mut buf);
     }
@@ -19,12 +19,11 @@ pub fn read_file(file_path: String) -> Vec<Node> {
     for line in file.lines() {
         let unwrapped_line = line.unwrap();
         let split_line = unwrapped_line.split_whitespace();
-        let node = split_line.into();
-        tsp_graph.push(node);
+        match split_line.try_into() { // try_into() is cool
+            Ok(node) => tsp_graph.push(node),
+            Err(_) => {} // last line is EOR so can't convert
+        }
     }
-
-    // drop last element - it's just empty EOF line
-    tsp_graph.pop();
 
     tsp_graph
 }
