@@ -5,14 +5,16 @@ use std::{
 
 use crate::tsp_types::Node;
 
+const SKIP_LINES: i32 = 6;
+
 pub fn read_file(file_path: String) -> Vec<Node> {
     let file = File::open(file_path).expect("Unable to read tsp file");
     let mut file = BufReader::new(file);
     let mut tsp_graph: Vec<Node> = Vec::new();
 
-    // skip first 6 lines, there's probably a smarter way to do this but fuck it
+    // skip first x lines, there's probably a smarter way to do this but fuck it
     let mut buf = String::new();
-    for _ in 0..6 {
+    for _ in 0..SKIP_LINES {
         let _ = file.read_line(&mut buf);
     }
 
