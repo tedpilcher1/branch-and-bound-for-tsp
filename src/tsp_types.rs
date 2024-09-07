@@ -1,6 +1,6 @@
 use std::str::SplitWhitespace;
 
-#[derive(Debug)]
+#[derive(Debug, Hash, PartialEq, Eq)]
 pub struct Node {
     pub x: i32,
     pub y: i32,
@@ -9,7 +9,6 @@ pub struct Node {
 impl<'a> TryFrom<SplitWhitespace<'a>> for Node {
     type Error = ();
     fn try_from(value: SplitWhitespace<'a>) -> Result<Self, Self::Error> {
-                
         if value.clone().count() == 1 {
             return Err(());
         }
@@ -24,4 +23,11 @@ impl<'a> TryFrom<SplitWhitespace<'a>> for Node {
             y: node_vals[1],
         })
     }
+}
+
+#[derive(Hash, PartialEq, Eq)]
+pub struct TourNode<'a> {
+    pub tour: Vec<&'a Node>,
+    pub lower_bound: i32,
+    // pub unvisited_nodes: Vec<Node>,
 }

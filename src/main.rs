@@ -1,6 +1,7 @@
 use tsp_reader::read_file;
 use tsp_utils::compute_cost_matrix;
 
+mod branch_and_bound;
 mod tsp_reader;
 mod tsp_types;
 mod tsp_utils;
