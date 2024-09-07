@@ -7,7 +7,7 @@ fn calculate_distance(node1: &Node, node2: &Node) -> f32 {
     (dx.powf(2.0) + dy.powf(2.0)).sqrt()
 }
 
-pub fn compute_cost_matrix(tsp_graph: &Vec<Node>) -> Vec<Vec<f32>>{
+pub fn compute_cost_matrix(tsp_graph: &Vec<Node>) -> Vec<Vec<f32>> {
     let num_nodes = tsp_graph.len();
     let mut cost_matrix: Vec<Vec<f32>> = vec![vec![0.0; num_nodes]; num_nodes];
 

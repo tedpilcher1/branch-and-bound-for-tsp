@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-
 use priority_queue::PriorityQueue;
 
 use crate::tsp_types::{Node, TourNode};
 
-fn run(tsp_graph: &Vec<Node>) -> (Vec<&Node>, i32) {
+fn run<'a>(tsp_graph: &'a Vec<Node>, cost_matrix: &'a Vec<Vec<f32>>) -> (Vec<&'a Node>, i32) {
     // let mut best_tour = ...;
     let mut best_tour: Vec<&Node> = Vec::new();
     // we're formulating this as max cost not min - kinda dumb but whatever
@@ -42,7 +40,7 @@ fn run(tsp_graph: &Vec<Node>) -> (Vec<&Node>, i32) {
             // Have complete tour
 
             // if cost(current_node.path) < best_cost then
-            let cost = cost(&current_node.tour);
+            let cost = calc_cost(&current_node.tour, cost_matrix);
             if cost > best_cost {
                 // found new best tour, update vars
                 best_cost = cost;
@@ -87,6 +85,19 @@ fn calc_lower_bound(tsp_graph: &Vec<Node>, tour: &Vec<&Node>) -> i32 {
     todo!()
 }
 
-fn cost(tour: &Vec<&Node>) -> i32 {
-    todo!()
+fn calc_cost(tour: &Vec<&Node>, cost_matrix: &Vec<Vec<f32>>) -> i32 {
+    let mut total_cost = 0;
+
+    for i in 0..(tour.len() - 2) {
+        let pos1 = tour[i].pos_in_graph;
+        let pos2 = tour[i + 1].pos_in_graph;
+        total_cost += cost_matrix[pos1][pos2] as i32;
+    }
+
+    // TotalCost += G.EdgeCost(Path[-1], Path[0])  // Return to start
+    let pos1 = tour[tour.len() - 1].pos_in_graph;
+    let pos2 = tour[0].pos_in_graph;
+    total_cost += cost_matrix[pos1][pos2] as i32;
+
+    total_cost
 }

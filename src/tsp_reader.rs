@@ -18,13 +18,19 @@ pub fn read_file(file_path: String) -> Vec<Node> {
         let _ = file.read_line(&mut buf);
     }
 
+    let mut counter = 0;
     for line in file.lines() {
         let unwrapped_line = line.unwrap();
         let split_line = unwrapped_line.split_whitespace();
-        match split_line.try_into() { // try_into() is cool
-            Ok(node) => tsp_graph.push(node),
+        match (split_line, counter).try_into() {
+            // try_into() is cool
+            Ok(node) => {
+                // node.pos_in_graph = counter;
+                tsp_graph.push(node);
+            }
             Err(_) => {} // last line is EOR so can't convert
         }
+        counter += 1;
     }
 
     tsp_graph
