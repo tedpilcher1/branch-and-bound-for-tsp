@@ -1,6 +1,6 @@
 use std::str::SplitWhitespace;
 
-#[derive(Debug, Hash, PartialEq, Eq)]
+#[derive(Debug, Hash, PartialEq, Eq, Clone)]
 pub struct Node {
     pub x: i32,
     pub y: i32,
@@ -29,5 +29,5 @@ impl<'a> TryFrom<SplitWhitespace<'a>> for Node {
 pub struct TourNode<'a> {
     pub tour: Vec<&'a Node>,
     pub lower_bound: i32,
-    // pub unvisited_nodes: Vec<Node>,
+    pub unvisited_nodes: Vec<&'a Node>,
 }
